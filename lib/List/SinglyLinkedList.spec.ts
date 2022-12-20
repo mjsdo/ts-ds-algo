@@ -12,7 +12,7 @@ describe('SinglyLinkedList', () => {
     expect(list.tail).toBeNull();
   });
 
-  it('append하면 tail.next에 추가된다.', () => {
+  it('append하면 tail에 추가된다.', () => {
     list.append(0);
 
     expect(list.tail!.value).toBe(0);
