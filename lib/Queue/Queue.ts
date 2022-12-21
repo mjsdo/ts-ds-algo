@@ -26,7 +26,7 @@ export default class Queue<T> {
 
   /** `head.value` */
   front() {
-    return this.head?.value;
+    return this.peek();
   }
 
   /** `tail.value` */
@@ -56,6 +56,7 @@ export default class Queue<T> {
 
     this.head = this.head.next;
     this.size -= 1;
+
     return dequeueValue;
   }
 }

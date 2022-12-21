@@ -34,15 +34,14 @@ describe('Queue', () => {
     queue.enqueue(1).enqueue(2);
 
     let headValue = queue.front();
-    const dequeue1Value = queue.dequeue();
+    let dequeueValue = queue.dequeue();
 
-    expect(dequeue1Value).toBe(headValue);
+    expect(dequeueValue).toBe(headValue);
 
     headValue = queue.front();
+    dequeueValue = queue.dequeue();
 
-    const dequeue2Value = queue.dequeue();
-
-    expect(dequeue2Value).toBe(headValue);
+    expect(dequeueValue).toBe(headValue);
     expect(queue.isEmpty()).toBe(true);
   });
 
