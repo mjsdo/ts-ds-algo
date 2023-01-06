@@ -31,14 +31,16 @@ describe('SinglyLinkedList', () => {
     expect(list.head!.value).toBe(-2);
   });
 
-  it('find로 노드를 찾을 수 있고, 찾은 경우 노드를 반환한다.', () => {
+  it('find로 노드를 찾을 수 있고, 찾은 경우 value를 반환한다.', () => {
     list.append(1).append(2);
 
-    expect(list.find(2)!.value).toBe(2);
+    const node = list.find((node) => node.value === 2);
+    expect(node!.value).toBe(2);
   });
 
   it('find로 요소를 찾지 못하면 null을 반환한다', () => {
-    expect(list.find(3)).toBe(null);
+    const node = list.find((node) => node.value === 3);
+    expect(node).toBeNull();
   });
 
   it('insertAfter의 타겟 노드가 null이라면 아무 일도 일어나지 않는다.', () => {
@@ -49,7 +51,7 @@ describe('SinglyLinkedList', () => {
   it('insertAfter로 타겟 노드의 다음에 요소를 삽입할 수 있다.', () => {
     list.append(1).append(2).append(3);
 
-    const node = list.find(2);
+    const node = list.find((node) => node.value === 2);
     list.insertAfter(node, 50);
 
     expect(node!.next!.value).toBe(50);

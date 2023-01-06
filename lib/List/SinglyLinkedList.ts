@@ -14,13 +14,18 @@ export default class SinglyLinkedList<T> {
   head: Nullable<Node<T>> = null;
   tail: Nullable<Node<T>> = null;
 
-  find(value: T) {
-    let curNode = this.head;
+  find(predicate: (node: Node<T>) => boolean, startNode?: Node<T>) {
+    let curNode = startNode || this.head;
 
-    while (curNode && curNode.value !== value) {
+    while (curNode) {
+      if (predicate(curNode)) {
+        return curNode;
+      }
+
       curNode = curNode.next;
     }
-    return curNode;
+
+    return null;
   }
 
   /** `tail`에 삽입 */
