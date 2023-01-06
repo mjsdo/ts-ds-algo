@@ -48,37 +48,89 @@ describe('SinglyLinkedList', () => {
     expect(list.head).toBeNull();
   });
 
-  it('insertAfter로 기준 노드의 next에 노드를 삽입할 수 있다.', () => {
+  it('insertAfter로 기준 노드의 next에 노드를 삽입할 수 있고, 단방향으로 연결된다.', () => {
+    // [ 1 -> 2 -> 50 -> 3 ]
     list.append(1).append(2).append(3);
 
     const node = list.find((node) => node.value === 2);
     list.insertAfter(node, 50);
 
-    expect(node!.next!.value).toBe(50);
+    const insertedNode = node!.next!;
+
+    expect(insertedNode.value).toBe(50);
+    expect(insertedNode.next).toBe(list.tail);
   });
 
-  it('remove로 삭제한 노드의 value가 반환된다.', () => {
-    list.append(1).append(2);
-    const value = list.remove((node) => node.value === 1);
+  describe('removeHeadNode와 removeTailNode', () => {
+    beforeEach(() => {
+      list.append(1).append(2).append(3);
+    });
 
-    expect(value).toBe(1);
-    expect(list.head!.value).toBe(2);
+    it('removeHeadNode로 head를 삭제할 수 있다.', () => {
+      list.removeHeadNode();
+      expect(list.head!.value).toBe(2);
+    });
+
+    it('removeTailNode로 tail을 삭제할 수 있다.', () => {
+      list.removeTailNode();
+      expect(list.tail!.value).toBe(2);
+    });
   });
 
-  it('remove로 삭제할 노드가 없다면 undefined를 반환한다.', () => {
-    list.append(1).append(2);
-    const value = list.remove((node) => node.value === 3);
-    expect(value).toBeUndefined();
+  describe('remove에서 predicate을 만족하는 노드가 한개인 경우', () => {
+    it('마지막 남은 노드를 삭제하면, head와 tail은 초기 상태인 null이 된다.', () => {
+      list.append(1);
+      expect(list.head!.value).toBe(1);
+      expect(list.tail!.value).toBe(1);
+      expect(list.tail).toBe(list.head);
+
+      list.remove((node) => node.value === 1);
+      expect(list.head).toBeNull();
+      expect(list.tail).toBeNull();
+    });
+
+    it('remove로 삭제한 노드의 prev노드와 next노드가 단뱡향으로 연결되고, 삭제된 노드의 value를 반환한다.', () => {
+      list.append(1).append(2).append(3);
+
+      const removedNode = list.find((node) => node.value === 2)!;
+      const prevRemovedNode = list.head!;
+      const nextRemovedNode = list.tail!;
+
+      const value = list.remove((node) => node === removedNode);
+
+      expect(value).toBe(2);
+      expect(prevRemovedNode.next).toBe(nextRemovedNode);
+    });
+
+    it('remove로 삭제할 노드가 없다면 undefined를 반환한다.', () => {
+      list.append(1).append(2);
+      const value = list.remove((node) => node.value === 3);
+      expect(value).toBeUndefined();
+    });
   });
 
-  it('remove에서 predicate을 만족하는 노드가 여러개라면 head에 가까운 순서대로 삭제된다.', () => {
-    list.append(1).append(2).append(1).append(2);
+  describe('remove에서 predicate을 만족하는 노드가 여러개인 경우', () => {
+    beforeEach(() => {
+      list.append(1).append(2).append(3).append(1);
+    });
 
-    list.remove((node) => node.value === 1);
-    expect(list.head!.value).toBe(2);
+    it('먼저 탐색된 노드를 지운다', () => {
+      // [ 1 -> 2 -> 3 -> 1 ]
+      list.remove((node) => node.value === 1);
 
-    list.remove((node) => node.value === 2);
-    expect(list.head!.value).toBe(1);
-    expect(list.tail!.value).toBe(2);
+      // [ 2 <-> 3 <-> 1 ]
+      expect(list.head!.value).toBe(2);
+      expect(list.tail!.value).toBe(1);
+    });
+
+    it('start를 지정해서 탐색 시작 위치를 정할 수 있다.', () => {
+      // [ 1 -> 2 -> 3 -> 1]
+      const secondNode = list.find((node) => node.value === 2);
+      list.remove((node) => node.value === 1, secondNode);
+
+      // [ 1 -> 2 -> 3 ]
+      expect(list.head!.value).toBe(1);
+      expect(list.tail!.value).toBe(3);
+    });
   });
 });

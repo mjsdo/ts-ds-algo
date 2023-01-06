@@ -14,7 +14,10 @@ export default class SinglyLinkedList<T> {
   head: Nullable<Node<T>> = null;
   tail: Nullable<Node<T>> = null;
 
-  find(predicate: (node: Node<T>) => boolean, startNode?: Node<T>) {
+  find(
+    predicate: (node: Node<T>) => boolean,
+    startNode: Nullable<Node<T>> = null,
+  ) {
     let curNode = startNode || this.head;
 
     while (curNode) {
@@ -63,30 +66,58 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  /** `head`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제 */
-  remove(predicate: (node: Node<T>) => boolean) {
-    if (!this.head) {
-      return undefined;
-    }
-
-    if (predicate(this.head)) {
-      const value = this.head.value;
-      this.head = this.head.next;
-      return value;
-    }
-
-    let prevNode = this.head;
-    let curNode = this.head.next;
+  /** `startNode`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제 */
+  remove(
+    predicate: (node: Node<T>) => boolean,
+    startNode: Nullable<Node<T>> = null,
+  ) {
+    let curNode = startNode || this.head;
 
     while (curNode) {
       if (predicate(curNode)) {
-        prevNode.next = curNode.next;
-        return curNode.value;
+        return this.removeByNode(curNode);
       }
 
       curNode = curNode.next;
     }
 
     return undefined;
+  }
+
+  removeByNode(node?: Nullable<Node<T>>) {
+    if (!node) {
+      return undefined;
+    }
+
+    if (node === this.head && this.head === this.tail) {
+      const value = this.head.value;
+      this.head = null;
+      this.tail = null;
+      return value;
+    }
+
+    if (node === this.head) {
+      const value = this.head.value;
+      this.head = this.head.next;
+      return value;
+    }
+
+    const value = node.value;
+    let prevNode = this.head;
+    while (prevNode && prevNode.next !== node) {
+      prevNode = prevNode.next;
+    }
+
+    if (prevNode) prevNode.next = node.next;
+    if (node === this.tail) this.tail = prevNode;
+    return value;
+  }
+
+  removeHeadNode() {
+    this.removeByNode(this.head);
+  }
+
+  removeTailNode() {
+    this.removeByNode(this.tail);
   }
 }
