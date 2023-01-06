@@ -23,6 +23,7 @@ export default class SinglyLinkedList<T> {
     return curNode;
   }
 
+  /** tail에 삽입 */
   append(value: T) {
     const newNode = new Node(value);
 
@@ -37,7 +38,13 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  insert(node: Nullable<Node<T>>, value: T) {
+  /** head에 삽입 */
+  prepend(value: T) {
+    const newNode = new Node(value);
+    newNode.next = this.head;
+    this.head = newNode;
+    return this;
+  }
     if (!node) return this;
 
     const newNode = new Node(value);

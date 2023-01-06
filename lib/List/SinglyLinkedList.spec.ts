@@ -22,6 +22,17 @@ describe('SinglyLinkedList', () => {
     expect(list.tail!.value).toBe(2);
   });
 
+  it('prepend하면 head에 추가된다.', () => {
+    list.prepend(0);
+    expect(list.head!.value).toBe(0);
+
+    list.prepend(-1);
+    expect(list.head!.value).toBe(-1);
+
+    list.prepend(-2);
+    expect(list.head!.value).toBe(-2);
+  });
+
   it('find로 노드를 찾을 수 있고, 찾은 경우 노드를 반환한다.', () => {
     list.append(1).append(2);
 
