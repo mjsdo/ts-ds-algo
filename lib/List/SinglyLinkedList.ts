@@ -31,7 +31,6 @@ export default class SinglyLinkedList<T> {
     return null;
   }
 
-  /** `tail`에 삽입 */
   append(value: T) {
     const newNode = new Node(value);
 
@@ -46,7 +45,6 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  /** `head`에 삽입 */
   prepend(value: T) {
     const newNode = new Node(value);
     newNode.next = this.head;
@@ -54,7 +52,6 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  /** `node`의 `next`에 삽입 */
   insertAfter(node: Nullable<Node<T>>, value: T) {
     if (!node) return this;
 

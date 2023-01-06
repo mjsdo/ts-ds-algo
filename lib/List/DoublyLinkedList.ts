@@ -32,7 +32,6 @@ export default class DoublyLinkedList<T> {
     return null;
   }
 
-  /** `tail`에 삽입 */
   append(value: T) {
     const newNode = new Node(value);
 
@@ -48,7 +47,6 @@ export default class DoublyLinkedList<T> {
     return this;
   }
 
-  /** `head`에 삽입 */
   prepend(value: T) {
     const newNode = new Node(value);
 
@@ -65,7 +63,6 @@ export default class DoublyLinkedList<T> {
     return this;
   }
 
-  /** `node`의 `next`에 삽입 */
   insertAfter(node: Nullable<Node<T>>, value: T) {
     if (!node) return this;
 
@@ -82,7 +79,6 @@ export default class DoublyLinkedList<T> {
     return this;
   }
 
-  /** `node`의 `prev`에 삽입 */
   insertBefore(node: Nullable<Node<T>>, value: T) {
     if (!node) return this;
 
@@ -99,7 +95,10 @@ export default class DoublyLinkedList<T> {
     return this;
   }
 
-  /** `startNode`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제 */
+  /**
+   * - `startNode`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제.
+   * - `reverseDirection`으로 탐색 방향 조절 가능
+   */
   remove(
     predicate: (node: Node<T>) => boolean,
     startNode: Nullable<Node<T>> = null,
