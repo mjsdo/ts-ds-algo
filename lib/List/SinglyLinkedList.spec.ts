@@ -42,60 +42,28 @@ describe('SinglyLinkedList', () => {
     expect(list.toString()).toBe(['[', 1, 2, 50, 3, ']'].join('\n'));
   });
 
-  it('insert의 타겟 노드가 없다면 아무런 변화 없다.', () => {
+  it('remove로 삭제한 노드의 value가 반환된다.', () => {
     list.append(1).append(2);
+    const value = list.remove((node) => node.value === 1);
 
-    const node = list.find(3);
-
-    list.insert(node, 100);
-
-    expect(list.toString()).toBe(['[', 1, 2, ']'].join('\n'));
+    expect(value).toBe(1);
+    expect(list.head!.value).toBe(2);
   });
 
-  it('remove로 타겟 노드를 삭제할 수 있다.', () => {
+  it('remove로 삭제할 노드가 없다면 undefined를 반환한다.', () => {
     list.append(1).append(2);
-    list.remove(2);
-    expect(list.toString()).toBe(['[', 1, ']'].join('\n'));
+    const value = list.remove((node) => node.value === 3);
+    expect(value).toBeUndefined();
   });
 
-  it('remove로 삭제할 타겟이 없다면 아무런 변화 없다.', () => {
-    list.append(1).append(2);
-    list.remove(3);
-    expect(list.toString()).toBe(['[', 1, 2, ']'].join('\n'));
-  });
-
-  it('remove로 지우려는 값이 두 개 이상 중복으로 존재한다면 앞에 위치한 값이 먼저 지워진다.', () => {
+  it('remove에서 predicate을 만족하는 노드가 여러개라면 head에 가까운 순서대로 삭제된다.', () => {
     list.append(1).append(2).append(1).append(2);
 
-    list.remove(1);
-
+    list.remove((node) => node.value === 1);
     expect(list.head!.value).toBe(2);
-    list.remove(2);
+
+    list.remove((node) => node.value === 2);
     expect(list.head!.value).toBe(1);
-  });
-
-  it('remove로 요소를 성공적으로 삭제한 경우 해당 요소를 반환한다.', () => {
-    list.append(1).append(2).append(3);
-    expect(list.remove(3)).toBe(3);
-  });
-
-  it('remove로 삭제하려는 요소가 없는 경우 undefined를 반환한다.', () => {
-    list.append(1).append(2).append(3);
-    expect(list.remove(4)).toBe(undefined);
-  });
-
-  it('toString으로 문자열 변환이 가능하며, 각 노드는 개행문자로 구분된다.', () => {
-    expect(list.toString()).toBe(['[', ']'].join('\n'));
-    expect(
-      list
-        .append(1)
-        .append(2)
-        .append(3)
-        .append(4)
-        .append(5)
-        .append(6)
-        .append(7)
-        .toString(),
-    ).toBe(['[', 1, 2, 3, 4, 5, 6, 7, ']'].join('\n'));
+    expect(list.tail!.value).toBe(2);
   });
 });

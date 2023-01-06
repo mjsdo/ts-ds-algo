@@ -48,44 +48,30 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  remove(value: T) {
-    let prevNode = this.head;
+  /** head부터 순회하면서 predicate을 가장 먼저 만족하는 노드를 삭제 */
+  remove(predicate: (node: Node<T>) => boolean) {
+    if (!this.head) {
+      return undefined;
+    }
 
-    if (!prevNode) return undefined;
-
-    // prevNode === head
-    if (this.head && this.head.value === value) {
-      const temp = this.head;
-
+    if (predicate(this.head)) {
+      const value = this.head.value;
       this.head = this.head.next;
-      temp.next = null;
-
       return value;
     }
 
-    while (prevNode.next && prevNode.next.value !== value) {
-      prevNode = prevNode.next;
-    }
+    let prevNode = this.head;
+    let curNode = this.head.next;
 
-    if (prevNode.next !== null) {
-      const deletedValue = prevNode.next.value;
+    while (curNode) {
+      if (predicate(curNode)) {
+        prevNode.next = curNode.next;
+        return curNode.value;
+  }
 
-      prevNode.next = prevNode.next.next;
-      return deletedValue;
+      curNode = curNode.next;
     }
 
     return undefined;
-  }
-
-  toString() {
-    let curNode = this.head;
-    let output = '[\n';
-
-    while (curNode !== null) {
-      output += `${JSON.stringify(curNode.value)}\n`;
-      curNode = curNode.next;
-    }
-    output += ']';
-    return output;
   }
 }
