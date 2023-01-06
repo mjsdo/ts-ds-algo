@@ -15,7 +15,10 @@ export default class DoublyLinkedList<T> {
   head: Nullable<Node<T>> = null;
   tail: Nullable<Node<T>> = null;
 
-  find(predicate: (node: Node<T>) => boolean, startNode?: Node<T>) {
+  find(
+    predicate: (node: Node<T>) => boolean,
+    startNode: Nullable<Node<T>> = null,
+  ) {
     let curNode = startNode || this.head;
 
     while (curNode) {
@@ -79,6 +82,7 @@ export default class DoublyLinkedList<T> {
     return this;
   }
 
+  /** `node`의 `prev`에 삽입 */
   insertBefore(node: Nullable<Node<T>>, value: T) {
     if (!node) return this;
 
@@ -95,30 +99,62 @@ export default class DoublyLinkedList<T> {
     return this;
   }
 
-  /** `head`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제 */
-  remove(predicate: (node: Node<T>) => boolean) {
-    if (!this.head) {
-      return undefined;
-    }
-
-    if (predicate(this.head)) {
-      const value = this.head.value;
-      this.head = this.head.next;
-      return value;
-    }
-
-    let prevNode = this.head;
-    let curNode = this.head.next;
+  /** `startNode`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제 */
+  remove(
+    predicate: (node: Node<T>) => boolean,
+    startNode: Nullable<Node<T>> = null,
+    reverseDirection = false,
+  ) {
+    let curNode = startNode || this.head;
+    const direction = reverseDirection ? 'prev' : 'next';
 
     while (curNode) {
       if (predicate(curNode)) {
-        prevNode.next = curNode.next;
-        return curNode.value;
+        return this.removeByNode(curNode);
       }
-
-      curNode = curNode.next;
+      curNode = curNode[direction];
     }
 
     return undefined;
+  }
+
+  removeByNode(node?: Nullable<Node<T>>) {
+    if (!node) {
+      return undefined;
+    }
+
+    if (node === this.head && this.head === this.tail) {
+      const value = this.head.value;
+      this.head = null;
+      this.tail = null;
+      return value;
+    }
+
+    if (node === this.head) {
+      const value = this.head.value;
+      this.head = this.head.next;
+      this.head!.prev = null;
+      return value;
+    }
+
+    if (node === this.tail) {
+      const value = this.tail.value;
+      this.tail = this.tail.prev;
+      this.tail!.next = null;
+      return value;
+    }
+
+    const value = node.value;
+    if (node.prev) node.prev.next = node.next;
+    if (node.next) node.next.prev = node.prev;
+    return value;
+  }
+
+  removeTailNode() {
+    return this.removeByNode(this.tail);
+  }
+
+  removeHeadNode() {
+    return this.removeByNode(this.head);
   }
 }
