@@ -14,11 +14,9 @@ describe('SinglyLinkedList', () => {
 
   it('append하면 tail에 추가된다.', () => {
     list.append(0);
-
     expect(list.tail!.value).toBe(0);
 
     list.append(1).append(2);
-
     expect(list.tail!.value).toBe(2);
   });
 
@@ -43,14 +41,18 @@ describe('SinglyLinkedList', () => {
     expect(list.find(3)).toBe(null);
   });
 
-  it('insert로 타겟 노드의 다음에 요소를 삽입할 수 있다.', () => {
+  it('insertAfter의 타겟 노드가 null이라면 아무 일도 일어나지 않는다.', () => {
+    list.insertAfter(null, 100);
+    expect(list.head).toBeNull();
+  });
+
+  it('insertAfter로 타겟 노드의 다음에 요소를 삽입할 수 있다.', () => {
     list.append(1).append(2).append(3);
 
     const node = list.find(2);
+    list.insertAfter(node, 50);
 
-    list.insert(node, 50);
-
-    expect(list.toString()).toBe(['[', 1, 2, 50, 3, ']'].join('\n'));
+    expect(node!.next!.value).toBe(50);
   });
 
   it('remove로 삭제한 노드의 value가 반환된다.', () => {

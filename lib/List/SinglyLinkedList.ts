@@ -23,7 +23,7 @@ export default class SinglyLinkedList<T> {
     return curNode;
   }
 
-  /** tail에 삽입 */
+  /** `tail`에 삽입 */
   append(value: T) {
     const newNode = new Node(value);
 
@@ -38,13 +38,16 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  /** head에 삽입 */
+  /** `head`에 삽입 */
   prepend(value: T) {
     const newNode = new Node(value);
     newNode.next = this.head;
     this.head = newNode;
     return this;
   }
+
+  /** `node`의 `next`에 삽입 */
+  insertAfter(node: Nullable<Node<T>>, value: T) {
     if (!node) return this;
 
     const newNode = new Node(value);
@@ -55,7 +58,7 @@ export default class SinglyLinkedList<T> {
     return this;
   }
 
-  /** head부터 순회하면서 predicate을 가장 먼저 만족하는 노드를 삭제 */
+  /** `head`부터 순회하면서 `predicate`을 가장 먼저 만족하는 노드를 삭제 */
   remove(predicate: (node: Node<T>) => boolean) {
     if (!this.head) {
       return undefined;
@@ -74,7 +77,7 @@ export default class SinglyLinkedList<T> {
       if (predicate(curNode)) {
         prevNode.next = curNode.next;
         return curNode.value;
-  }
+      }
 
       curNode = curNode.next;
     }
