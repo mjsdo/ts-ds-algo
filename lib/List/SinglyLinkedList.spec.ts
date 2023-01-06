@@ -12,7 +12,7 @@ describe('SinglyLinkedList', () => {
     expect(list.tail).toBeNull();
   });
 
-  it('append하면 tail에 추가된다.', () => {
+  it('append하면 tail에 노드가 추가된다.', () => {
     list.append(0);
     expect(list.tail!.value).toBe(0);
 
@@ -20,7 +20,7 @@ describe('SinglyLinkedList', () => {
     expect(list.tail!.value).toBe(2);
   });
 
-  it('prepend하면 head에 추가된다.', () => {
+  it('prepend하면 head에 노드가 추가된다.', () => {
     list.prepend(0);
     expect(list.head!.value).toBe(0);
 
@@ -43,12 +43,12 @@ describe('SinglyLinkedList', () => {
     expect(node).toBeNull();
   });
 
-  it('insertAfter의 타겟 노드가 null이라면 아무 일도 일어나지 않는다.', () => {
+  it('insertAfter의 기준 노드가 null이라면 아무 일도 일어나지 않는다.', () => {
     list.insertAfter(null, 100);
     expect(list.head).toBeNull();
   });
 
-  it('insertAfter로 타겟 노드의 다음에 요소를 삽입할 수 있다.', () => {
+  it('insertAfter로 기준 노드의 next에 노드를 삽입할 수 있다.', () => {
     list.append(1).append(2).append(3);
 
     const node = list.find((node) => node.value === 2);
