@@ -7,7 +7,7 @@ export type CompareFn<T> = (a: T, b: T) => number;
 
 export interface HeapInterface<T> {
   compareFn: (a: T, b: T) => ReturnType<CompareFn<T>>;
-  push: (value: T | T[]) => this;
+  push: (...values: T[]) => this;
   peek: () => T | undefined;
   pop: () => T | undefined;
   size: () => number;
@@ -31,14 +31,13 @@ export default class Heap<T> implements HeapInterface<T> {
     return this.heap.length - 1;
   }
 
-  push(value: T | T[]) {
-    if (Array.isArray(value)) {
-      value.forEach((v) => this.push(v));
-      return this;
-    }
-
+  private pushOne(value: T) {
     this.heap.push(value);
     this.siftUp(this.size());
+  }
+
+  push(...values: T[]) {
+    values.forEach((value) => this.pushOne(value));
     return this;
   }
 

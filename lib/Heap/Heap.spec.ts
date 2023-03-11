@@ -27,7 +27,7 @@ describe('Heap', () => {
 
   it('push로 배열을 전달하면 전달한 배열의 길이만큼 size가 늘어난다', () => {
     const arr = [1, 2, 3, 4];
-    heap.push(arr);
+    heap.push(...arr);
     expect(heap.size()).toBe(arr.length);
   });
 
@@ -53,14 +53,14 @@ describe('Heap', () => {
     const nums = [1, 2, 3, 4];
     const isNull = (v: any) => v === null;
 
-    heap.push(nums);
+    heap.push(...nums);
     const arr = heap.toArray();
     expect(arr.some(isNull)).toBeFalsy();
   });
 
   it('toArray해서 반환받은 배열에는 heap이 가지고 있던 모든 요소가 있다.', () => {
     const nums = [4, 3, 2, 1, 0, 1, 2, 3, 4];
-    heap.push(nums);
+    heap.push(...nums);
     const arr = heap.toArray();
     while (nums.length) {
       const pop = nums.pop() as number;
@@ -77,7 +77,7 @@ describe('MaxHeap', () => {
 
   beforeEach(() => {
     maxHeap = new Heap(maxHeapCompareFn);
-    maxHeap.push(nums);
+    maxHeap.push(...nums);
   });
 
   it('pop하면 크기가 가장 큰 숫자가 제거된다.', () => {
@@ -99,7 +99,7 @@ describe('MinHeap', () => {
 
   beforeEach(() => {
     minHeap = new Heap(minHeapCompareFn);
-    minHeap.push(nums);
+    minHeap.push(...nums);
   });
 
   it('pop하면 크기가 가장 작은 숫자가 제거된다.', () => {
@@ -139,7 +139,7 @@ describe('Variant', () => {
 
   beforeEach(() => {
     heap = new Heap(sortFn);
-    heap.push(vals);
+    heap.push(...vals);
   });
 
   it('pop순서는 정렬 함수로 heap배열을 정렬한 순서와 일치한다.', () => {
