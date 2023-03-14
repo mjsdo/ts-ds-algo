@@ -17,6 +17,12 @@ type BSTCompareResult =
   | typeof BST.LEFT_IS_GT
   | typeof BST.RIGHT_IS_GT;
 
+const defaultCompareFn = (a: any, b: any) => {
+  if (a < b) return BST.RIGHT_IS_GT;
+  if (a > b) return BST.LEFT_IS_GT;
+  return BST.EQ;
+};
+
 export default class BST<T> {
   root: Node<T> | null = null;
   static readonly EQ = Symbol();
@@ -33,7 +39,7 @@ export default class BST<T> {
 
   private compareFn: (a: T, b: T) => BSTCompareResult;
 
-  constructor(compareFn: (a: T, b: T) => BSTCompareResult) {
+  constructor(compareFn: (a: T, b: T) => BSTCompareResult = defaultCompareFn) {
     this.compareFn = compareFn;
   }
 
